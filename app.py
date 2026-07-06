@@ -69,30 +69,6 @@ if not is_logged_in():
 
     st.divider()
 
-    col1, col2 = st.columns(2)
-
-    # ---------------- Citizen ----------------
-
-    with col1:
-
-        st.markdown("## 👤 Citizen Portal")
-
-        st.write(
-            "Access disaster alerts, weather updates, SOS services, shelters, maps and AI assistance."
-        )
-
-    # ---------------- Admin ----------------
-
-    with col2:
-
-        st.markdown("## 🏛 Disaster Control Center")
-
-        st.write(
-            "Authorized disaster management officers can monitor SOS requests and community reports."
-        )
-
-    st.divider()
-
     st.subheader("🔐 Sign In")
 
     email = st.text_input(
