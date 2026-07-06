@@ -8,8 +8,11 @@ def login(email, password):
     doc = db.collection("users").document(email).get()
 
     if not doc.exists:
-        raise Exception(f"Document not found: {email}")
+        return None
 
     user = doc.to_dict()
 
-    raise Exception(f"Firestore returned: {user}")
+    if user["password"] != password:
+        return None
+
+    return user
