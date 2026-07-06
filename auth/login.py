@@ -8,9 +8,12 @@ def login(email, password):
     doc = db.collection("users").document(email).get()
 
     if not doc.exists:
-        return None
+        raise Exception(f"Document not found: {email}")
 
     user = doc.to_dict()
+
+    if "password" not in user:
+        raise Exception(user)
 
     if user["password"] != password:
         return None
