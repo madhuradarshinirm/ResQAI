@@ -7,9 +7,9 @@ from auth.session import (
     is_logged_in
 )
 
-# ---------------------------------------------------
+# -------------------------------------------------
 # PAGE CONFIG
-# ---------------------------------------------------
+# -------------------------------------------------
 
 st.set_page_config(
     page_title="ResQAI",
@@ -17,9 +17,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------------------------------------------
+# -------------------------------------------------
 # LOAD CSS
-# ---------------------------------------------------
+# -------------------------------------------------
 
 def load_css():
 
@@ -28,11 +28,8 @@ def load_css():
         with open("assets/style.css") as f:
 
             st.markdown(
-
                 f"<style>{f.read()}</style>",
-
                 unsafe_allow_html=True
-
             )
 
     except FileNotFoundError:
@@ -42,74 +39,61 @@ def load_css():
 
 load_css()
 
-# ---------------------------------------------------
+# -------------------------------------------------
 # SESSION
-# ---------------------------------------------------
+# -------------------------------------------------
 
 if "logged_in" not in st.session_state:
 
-    st.session_state.logged_in = False
+    st.session_state["logged_in"] = False
 
 if "user" not in st.session_state:
 
-    st.session_state.user = None
+    st.session_state["user"] = None
 
-
-# ===================================================
+# =================================================
 # LOGIN PAGE
-# ===================================================
+# =================================================
 
 if not is_logged_in():
 
-    st.markdown(
-        """
-# 🚨 ResQAI
+    st.title("🚨 ResQAI")
 
-### AI-Powered Disaster Management Platform
-"""
-    )
+    st.subheader("AI-Powered Disaster Management Platform")
 
     st.divider()
 
-    left, right = st.columns(2)
+    col1, col2 = st.columns(2)
 
-    # ------------------------------------------------
-
-    with left:
+    with col1:
 
         st.markdown("## 👤 Citizen Portal")
 
-        st.success(
+        st.write(
             """
-### Demo Account
+Access:
 
-📧 **Email**
-
-`citizen@gmail.com`
-
-🔑 **Password**
-
-`citizen123`
+- 🌦 Live Weather Updates
+- 🗺 Disaster Map
+- 🆘 SOS Emergency
+- 🤖 AI Assistant
+- 🏠 Shelter Finder
+- 👥 Community Reports
 """
         )
 
-    # ------------------------------------------------
-
-    with right:
+    with col2:
 
         st.markdown("## 🏛 Disaster Control Center")
 
-        st.success(
+        st.write(
             """
-### Demo Account
+Authorized disaster management officers can:
 
-📧 **Email**
-
-`admin@gov.in`
-
-🔑 **Password**
-
-`admin123`
+- 🚨 Monitor SOS Requests
+- 👥 Verify Community Reports
+- 📊 View Analytics Dashboard
+- 🌍 Coordinate Emergency Response
 """
         )
 
@@ -127,11 +111,11 @@ if not is_logged_in():
     )
 
     phone = st.text_input(
-        "Phone Number (Optional)"
+        "Phone Number"
     )
 
     address = st.text_area(
-        "Address (Optional)"
+        "Address"
     )
 
     if st.button("🚀 Login"):
@@ -146,7 +130,7 @@ if not is_logged_in():
             login_user(user)
 
             st.success(
-                f"Welcome {user['name']}"
+                "Login Successful!"
             )
 
             st.rerun()
@@ -157,13 +141,13 @@ if not is_logged_in():
                 "Invalid Email or Password."
             )
 
-# ===================================================
+# =================================================
 # HOME PAGE
-# ===================================================
+# =================================================
 
 else:
 
-    user = st.session_state.user
+    user = st.session_state["user"]
 
     st.title("🚨 Welcome to ResQAI")
 
@@ -185,7 +169,7 @@ else:
 
     st.divider()
 
-    st.subheader("📦 Available Modules")
+    st.subheader("Available Modules")
 
     col1, col2 = st.columns(2)
 
@@ -207,7 +191,7 @@ else:
 
         st.success("📊 Dashboard")
 
-    # ------------------------------------------------
+    # ---------------------------------------------
 
     if user["email"].endswith("@gov.in"):
 
@@ -218,60 +202,9 @@ else:
         )
 
         st.page_link(
-
             "pages/Admin_Dashboard.py",
-
             label="🏛 Open Disaster Control Center",
-
             icon="🚨"
-
-        )
-
-    st.divider()
-
-    st.markdown("### 🚀 Quick Navigation")
-
-    c1, c2, c3 = st.columns(3)
-
-    with c1:
-
-        st.page_link(
-            "pages/Dashboard.py",
-            label="📊 Dashboard"
-        )
-
-        st.page_link(
-            "pages/Live_Weather.py",
-            label="🌦 Live Weather"
-        )
-
-        st.page_link(
-            "pages/Disaster_Map.py",
-            label="🗺 Disaster Map"
-        )
-
-    with c2:
-
-        st.page_link(
-            "pages/AI_Assistant.py",
-            label="🤖 AI Assistant"
-        )
-
-        st.page_link(
-            "pages/SOS.py",
-            label="🆘 SOS"
-        )
-
-        st.page_link(
-            "pages/Community_Reports.py",
-            label="👥 Community Reports"
-        )
-
-    with c3:
-
-        st.page_link(
-            "pages/Shelter_Finder.py",
-            label="🏠 Shelter Finder"
         )
 
     st.divider()
