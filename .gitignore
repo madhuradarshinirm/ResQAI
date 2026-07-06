@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Firebase credentials
+firebase/
+firebase_key.json
+
+# Uploaded files
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
