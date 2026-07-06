@@ -1,24 +1,47 @@
-from geopy.geocoders import Nominatim
+import requests
+import streamlit as st
 
 def get_coordinates(city):
 
+    url = "https://nominatim.openstreetmap.org/search"
+
+    params = {
+        "q": city,
+        "format": "json",
+        "limit": 1
+    }
+
+    headers = {
+        "User-Agent": "ResQAI-Hackathon"
+    }
+
     try:
 
-        geolocator = Nominatim(
-            user_agent="ResQAI_Disaster_Management_App",
+        response = requests.get(
+            url,
+            params=params,
+            headers=headers,
             timeout=10
         )
 
-        location = geolocator.geocode(city)
+        st.write("Status:", response.status_code)
 
-        if location is None:
+        st.write(response.text)
+
+        if response.status_code != 200:
+            return None
+
+        data = response.json()
+
+        if len(data) == 0:
             return None
 
         return {
-            "latitude": location.latitude,
-            "longitude": location.longitude,
-            "display_name": location.address
+            "latitude": float(data[0]["lat"]),
+            "longitude": float(data[0]["lon"]),
+            "display_name": data[0]["display_name"]
         }
 
-    except:
+    except Exception as e:
+        st.error(e)
         return None
