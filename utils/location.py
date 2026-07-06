@@ -1,40 +1,23 @@
-import requests
+from geopy.geocoders import Nominatim
 
 def get_coordinates(city):
 
-    url = "https://nominatim.openstreetmap.org/search"
-
-    params = {
-        "q": city,
-        "format": "json",
-        "limit": 1
-    }
-
-    headers = {
-        "User-Agent": "ResQAI/1.0"
-    }
-
     try:
 
-        response = requests.get(
-            url,
-            params=params,
-            headers=headers,
+        geolocator = Nominatim(
+            user_agent="ResQAI_Disaster_Management_App",
             timeout=10
         )
 
-        if response.status_code != 200:
-            return None
+        location = geolocator.geocode(city)
 
-        data = response.json()
-
-        if not data:
+        if location is None:
             return None
 
         return {
-            "latitude": float(data[0]["lat"]),
-            "longitude": float(data[0]["lon"]),
-            "display_name": data[0]["display_name"]
+            "latitude": location.latitude,
+            "longitude": location.longitude,
+            "display_name": location.address
         }
 
     except:
