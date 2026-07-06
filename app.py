@@ -7,19 +7,16 @@ from auth.session import (
     is_logged_in
 )
 
-# -------------------------------------------------
-# PAGE CONFIG
-# -------------------------------------------------
-
 st.set_page_config(
     page_title="ResQAI",
     page_icon="🚨",
     layout="wide"
 )
 
-# -------------------------------------------------
-# LOAD CSS
-# -------------------------------------------------
+
+# -----------------------------
+# Load CSS
+# -----------------------------
 
 def load_css():
 
@@ -28,20 +25,24 @@ def load_css():
         with open("assets/style.css") as f:
 
             st.markdown(
+
                 f"<style>{f.read()}</style>",
+
                 unsafe_allow_html=True
+
             )
 
-    except FileNotFoundError:
+    except:
 
         pass
 
 
 load_css()
 
-# -------------------------------------------------
-# SESSION
-# -------------------------------------------------
+
+# -----------------------------
+# Session
+# -----------------------------
 
 if "logged_in" not in st.session_state:
 
@@ -51,50 +52,43 @@ if "user" not in st.session_state:
 
     st.session_state["user"] = None
 
-# =================================================
+
+# ==========================================================
 # LOGIN PAGE
-# =================================================
+# ==========================================================
 
 if not is_logged_in():
 
-    st.title("🚨 ResQAI")
+    st.markdown(
+        """
+# 🚨 ResQAI
 
-    st.subheader("AI-Powered Disaster Management Platform")
+### AI-Powered Disaster Management Platform
+"""
+    )
 
     st.divider()
 
     col1, col2 = st.columns(2)
+
+    # ---------------- Citizen ----------------
 
     with col1:
 
         st.markdown("## 👤 Citizen Portal")
 
         st.write(
-            """
-Access:
-
-- 🌦 Live Weather Updates
-- 🗺 Disaster Map
-- 🆘 SOS Emergency
-- 🤖 AI Assistant
-- 🏠 Shelter Finder
-- 👥 Community Reports
-"""
+            "Access disaster alerts, weather updates, SOS services, shelters, maps and AI assistance."
         )
+
+    # ---------------- Admin ----------------
 
     with col2:
 
         st.markdown("## 🏛 Disaster Control Center")
 
         st.write(
-            """
-Authorized disaster management officers can:
-
-- 🚨 Monitor SOS Requests
-- 👥 Verify Community Reports
-- 📊 View Analytics Dashboard
-- 🌍 Coordinate Emergency Response
-"""
+            "Authorized disaster management officers can monitor SOS requests and community reports."
         )
 
     st.divider()
@@ -118,14 +112,22 @@ Authorized disaster management officers can:
         "Address"
     )
 
-    if st.button("🚀 Login"):
+    if st.button(
+        "🚀 Login"
+    ):
 
         user = login(
             email,
             password
         )
 
-        if user:
+        if user is None:
+
+            st.error(
+                "Invalid Email or Password."
+            )
+
+        else:
 
             login_user(user)
 
@@ -135,15 +137,10 @@ Authorized disaster management officers can:
 
             st.rerun()
 
-        else:
 
-            st.error(
-                "Invalid Email or Password."
-            )
-
-# =================================================
+# ==========================================================
 # HOME PAGE
-# =================================================
+# ==========================================================
 
 else:
 
@@ -171,9 +168,9 @@ else:
 
     st.subheader("Available Modules")
 
-    col1, col2 = st.columns(2)
+    c1, c2 = st.columns(2)
 
-    with col1:
+    with c1:
 
         st.success("🌦 Live Weather")
 
@@ -183,7 +180,7 @@ else:
 
         st.success("🆘 SOS Emergency")
 
-    with col2:
+    with c2:
 
         st.success("🏠 Shelter Finder")
 
@@ -191,7 +188,9 @@ else:
 
         st.success("📊 Dashboard")
 
-    # ---------------------------------------------
+    # -----------------------------
+    # Admin
+    # -----------------------------
 
     if user["email"].endswith("@gov.in"):
 
@@ -209,7 +208,9 @@ else:
 
     st.divider()
 
-    if st.button("🚪 Logout"):
+    if st.button(
+        "🚪 Logout"
+    ):
 
         logout_user()
 
